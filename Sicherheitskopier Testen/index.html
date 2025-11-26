@@ -1,0 +1,1917 @@
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Willkommen</title>
+</head>
+<body>
+
+  
+
+<div>
+  <meta charset="UTF-8">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="theme-color" content="#007aff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+ <title>Deine Lern-App</title>
+ <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+
+<title>Lern-App</title>
+<style>
+  :root {
+    --blue: #007aff;
+    --green: #34c759;
+    --yellow: #ffcc00;
+    --bg: #f4f5f9;
+    --card: #fff;
+    --shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .time-display {
+    font-size: 16px;
+    background: #eaf4ff;
+    color: #007aff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  .test-row {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .test-time {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #eaf4ff;
+    color: #007aff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    margin: 0;
+    padding: 20px;
+    color: #222;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  html, body {
+    height: 100%;
+  }
+ #app {
+  padding-bottom: 20px;
+}
+  h1, h2, h3 {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: 600;
+  }
+  h1, h2, h3  {
+  font-size: 22px;
+}
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin: 15px auto;        /* Zentriert horizontal */
+  width: calc(100% - 30px); /* Volle Breite minus Abstand */
+  max-width: 500px;         /* optional: auf großen Bildschirmen nicht zu breit */
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-in-out;
+  display: block !important; /* zwingt Block-Darstellung */
+}
+@media (max-width: 600px) {
+  .card {
+    width: calc(100% - 20px); /* noch weniger Rand auf kleinen Handys */
+    margin: 10px auto;
+  }
+}
+.card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #007aff;
+}
+.card p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card ul, .card ol {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.card li {
+  margin-bottom: 6px;
+}
+textarea#textAnswer {
+  font-size: 16px;
+  line-height: 1.5;
+}
+button {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 17px;
+  border-radius: 14px;
+  border: none;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+  button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+  }
+  button:active {
+    transform: scale(0.98);
+  }
+
+  button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.year-btn {
+  background: linear-gradient(135deg, #007aff, #4da3ff);
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+}
+  .year-btn:nth-child(2) {
+    background: linear-gradient(135deg, var(--green), #6fda87);
+  }
+  .year-btn:nth-child(3) {
+    background: linear-gradient(135deg, var(--yellow), #ffd84f);
+    color: #333;
+  }
+  .start-logo {
+    display: block;
+    width: 90px;
+    margin: 20px auto;
+    opacity: 0.9;
+  }
+  .progress-container {
+    width: 100%;
+    background: #e5e5ea;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 14px; /* leicht höher für Touch */
+    margin-top: 8px;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--blue);
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  .stats-box {
+    background: #f9f9fb;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  .test-info {
+    font-size: 14px;
+    color: #666;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--green);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 8px;
+    margin-left: 8px;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .nav-buttons button {
+    flex: 1;
+  }
+  .correct-answer {
+    color: #34c759;
+    font-weight: bold;
+  }
+  .wrong-answer {
+    color: #ff3b30;
+    font-weight: bold;
+  }
+    button {
+      font-size: 16px;
+      padding: 12px 14px;
+    }
+    .time-display {
+      font-size: 15px;
+      padding: 6px 10px;
+    }
+    .test-time {
+      font-size: 12px;
+      padding: 3px 6px;
+    }
+h2 {
+text-align: center;
+color: #333;
+}
+label {
+font-weight: bold;
+color: #444;
+}
+select, input {
+width: 100%;
+padding: 10px;
+margin: 8px 0;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 18px; /* bigger inputs for mobile */
+}
+button.primary {
+width: 100%;
+padding: 12px;
+margin-top: 12px;
+background: #007bff;
+color: white;
+border: none;
+border-radius: 10px;
+font-size: 17px;
+cursor: pointer;
+transition: 0.2s;
+}
+button.primary:hover {
+background: #005fcc;
+}
+button.secondary {
+width: 100%;
+padding: 10px;
+margin-top: 12px;
+background: #ddd;
+color: #333;
+border: none;
+border-radius: 10px;
+font-size: 16px;
+cursor: pointer;
+transition: 0.2s;
+}
+button.secondary:hover {
+background: #c5c5c5;
+}
+#logoutBtn {
+  background: #cccccc96;
+  color: #333;
+}
+#ergebnis {
+margin-top: 18px;
+font-size: 18px;
+text-align: center;
+padding: 10px;
+background: #eef6ff;
+border-radius: 10px;
+border: 1px solid #cfe0ff;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px);}
+to { opacity: 1; transform: translateY(0);}
+}
+
+
+.mobile-card {
+  max-width: 420px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  text-align: center;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.mobile-title {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.year-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.year-item {
+  padding: 14px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  background: #0077ff;
+  color: white;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s;
+}
+
+.year-item:active {
+  background: #005fcc;
+  transform: scale(0.97);
+}
+
+.back-btn {
+  margin-top: 22px;
+  padding: 12px;
+  width: 100%;
+  background: #f0f0f0;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s;
+}
+
+.back-btn:active {
+  background: #e0e0e0;
+  transform: scale(0.97);
+}
+
+@media (max-width: 360px) {
+  .mobile-card {
+    padding: 18px;
+  }
+
+  .mobile-title {
+    font-size: 1.4rem;
+  }
+
+  .year-item {
+    font-size: 1.1rem;
+  }
+}
+</style>
+</head>
+<meta charset="UTF-8">
+<title>Geschützte Seite</title>
+
+</head>
+</div>
+<script src="tests.js"></script>
+<script src="lerninhalte.js"></script>
+
+<script type="module">
+
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyDgiDt6qrDZqsb4t_pbaXV1E-ZHS0USUJ0",
+  authDomain: "azubi-learn.firebaseapp.com",
+  projectId: "azubi-learn",
+  storageBucket: "azubi-learn.firebasestorage.app",
+  messagingSenderId: "740559151800",
+  appId: "1:740559151800:web:2eddc901f8340804d24a4d"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+</script>
+<script type="module">
+    import { auth } from "./config.js";
+    import { onAuthStateChanged, signOut } 
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    let loggedInUserEmail = "";
+
+///////////////////   console.log(auth) //////////////////
+
+    function updateUserEmail() {
+      const elem = document.getElementById("userEmail");
+      if (elem) elem.innerText = "Eingeloggt als: " + loggedInUserEmail;
+    }
+
+    // Login-Check
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        loggedInUserEmail = user.email;
+        updateUserEmail();
+      }
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").onclick = async () => {
+      await signOut(auth);
+      window.location.href = "login.html";
+    };
+
+ </script>
+
+  <script type="module">
+
+    /* ========= FIREBASE IMPORTS ========= */
+    import { auth, db } from "./config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+    /* ========= ADMIN UID ========= */
+    const ADMIN_UID = "qPXG8ARwMQTgTd5UHvbIfn689wK2";
+
+
+    /* ========= LOGIN CHECK ========= */
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const isAdmin = user.uid === ADMIN_UID;
+
+      if (isAdmin) {
+        showYearSelectionAdmin();
+      } else {
+        showYearSelection();
+      }
+    });
+
+
+  </script>
+  
+
+<body>
+<div 
+id="userBar" 
+style="
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:#666;
+  margin-bottom:10px;
+  opacity:0.7;
+">
+    <span id="userEmail"></span>
+    <button id="logoutBtn" style="
+        background:none;
+        border:1px solid #ccc;
+        padding:4px 8px;
+        border-radius:6px;
+        font-size:12px;
+        color:#555;
+        cursor:pointer;
+        transition:0.2s;
+    ">Logout</button>
+</div>
+<div id="app"></div>
+<script>
+window.showTestsForYear = function (year) {
+
+  let html = `
+    <div class="mobile-card">
+      <h2>${year}. Lehrjahr – Tests</h2>
+  `;
+
+  TESTS[year].forEach(t => {
+    html += `
+      <button class="year-item" onclick="startTest('${t.id}')">
+        ${t.name}
+      </button>
+    `;
+  });
+
+  html += `
+      <button class="back-btn" onclick="showLehrjahre()">Zurück</button>
+    </div>
+  `;
+
+  app.innerHTML = html;
+};
+
+function showUserInterface() {
+  app.innerHTML = `
+    <h2>Willkommen!</h2>
+    <button onclick="showLehrjahre()">Zu den Tests</button>
+  `;
+}
+
+function showYearSelectionAdmin() {
+  const savedPlayer = JSON.parse(localStorage.getItem("player"));
+  if (savedPlayer) player = savedPlayer;
+
+  app.innerHTML = `
+  <div class="card">
+    <img src="logo.png" class="start-logo" alt="Logo">
+    <h1>📘 Lern-App</h1>
+
+    <p style="text-align:center; font-weight:bold; margin:5px 0;">
+      🎖 Level: ${player.level} | XP: ${player.xp} / ${player.xpToNext} | Punkte: ${player.points}
+    </p>
+
+    <p style="text-align:center; font-style:italic; margin:5px 0;">
+      ${player.email || ''}
+    </p>
+
+    <!-- Hauptfunktionen -->
+    <div style="display:flex; flex-direction:column; gap:10px; margin:10px 0;">
+      <button class="primary" onclick="showLehrjahre()">📚 Lehrjahre</button>
+      <button class="primary" onclick="startGlobalMistakeTraining()">🧠 Gemischte Fragen</button>
+      <button class="primary" onclick="startGlobalExam()">📝 Abschlussprüfung starten</button>
+      <button class="primary" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);" onclick="showLernThemen()">📚 Lernen</button> 
+      <button class="secondary" onclick="showAllResults()">📊 Alle Testergebnisse</button>
+    </div>
+
+    <!-- Formeln-Rechner -->
+    <div class="card" id="formelCard" style="margin-top:20px;">
+       <h2>⚡ Formeln-Rechner</h2>
+
+       <label for="formelSelect">Formel auswählen:</label>
+       <select id="formelSelect" class="primary" onchange="updateFormelInputs()" style="margin:10px 0;">
+         <option value="" selected disabled>Bitte Formel auswählen</option>
+         <option value="ohm">Ohmsches Gesetz (R = U/I)</option>
+         <option value="leistung">Leistung (P = U*I)</option>
+         <option value="spannungTeiler">Spannungsteiler (Ua = Ue*R2/(R1+R2))</option>
+         <option value="reihenwiderstand">Reihenschaltung (Rges = R1 + R2)</option>
+         <option value="parallelwiderstand">Parallelschaltung (1/Rges = 1/R1 + 1/R2)</option>
+         <option value="kondensator">Kondensator (C = Q/U)</option>
+         <option value="kondensatorEnergie">Energie Kondensator (E = 0.5 * C * U²)</option>
+         <option value="leistungR">Leistung über Widerstand (P = R*I²)</option>
+         <option value="blindKapazitiv">Kapazitive Blindreaktanz (Xc = 1/(2π f C))</option>
+         <option value="blindInduktiv">Induktive Blindreaktanz (XL = 2π f L)</option>
+         <option value="induktivSpannung">Induktivität Spannung (U = L*(ΔI/Δt))</option>
+         <option value="grenzfreqRC">RC Grenzfrequenz (fg = 1/(2π R C))</option>
+         <option value="grenzfreqRL">RL Grenzfrequenz (fg = R/(2π L))</option>
+         <option value="spulenEnergie">Energie in Spule (E = 0.5 * L * I²)</option>
+         <option value="zeitKonstanteRC">Zeitkonstante RC (τ = R*C)</option>
+       </select>
+
+       <div id="inputs" style="margin-top:15px;"></div>
+
+       <div id="ergebnis" style="
+          display:none;
+          margin-top:15px;
+          padding:15px;
+          border-radius:10px;
+          background:#f0f0f0;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          text-align:center;
+          font-size:1.3em;
+          font-weight:bold;
+          color:#333;
+          transition: all 0.5s ease;
+       "></div>
+
+       <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+         <button class="primary" onclick="berechne()">Berechnen</button>
+         <button class="secondary" onclick="showStats()">📊 Statistik</button>
+       </div>
+    </div>
+  </div>
+  `;
+}
+
+
+function showYearSelection() {
+  const savedPlayer = JSON.parse(localStorage.getItem("player"));
+  if (savedPlayer) player = savedPlayer;
+  
+app.innerHTML = `
+
+  <div class="card">
+    <img src="logo.png" class="start-logo" alt="Logo">
+    <h1>📘 Lern-App</h1>
+
+    <p style="text-align:center; font-weight:bold; margin:5px 0;">
+      🎖 Level: ${player.level} | XP: ${player.xp} / ${player.xpToNext} | Punkte: ${player.points}
+    </p>
+
+    <p style="text-align:center; font-style:italic; margin:5px 0;">
+      ${player.email || ''}
+    </p>
+
+    <div style="display:flex; flex-direction:column; gap:10px; margin:10px 0;">
+      <button class="primary" onclick="showLehrjahre()">📚 Lehrjahre</button>
+      <button class="primary" onclick="startGlobalMistakeTraining()">🧠 Gemischte Fragen</button>
+         <button class="primary" onclick="startGlobalExam()">📝 Abschlussprüfung starten</button>
+      <button class="primary" style="background:linear-gradient(135deg,#8e44ad,#9b59b6);" onclick="showLernThemen()">📚 Lernen</button> 
+ 
+
+    <div class="card" id="formelCard" style="margin-top:20px;">
+       <h2>⚡ Formeln-Rechner</h2>
+
+       <label for="formelSelect">Formel auswählen:</label>
+       <select id="formelSelect" class="primary" onchange="updateFormelInputs()" style="margin:10px 0;">
+         <option value="" selected disabled>Bitte Formel auswählen</option>
+         <option value="ohm">Ohmsches Gesetz (R = U/I)</option>
+         <option value="leistung">Leistung (P = U*I)</option>
+         <option value="spannungTeiler">Spannungsteiler (Ua = Ue*R2/(R1+R2))</option>
+         <option value="reihenwiderstand">Reihenschaltung (Rges = R1 + R2)</option>
+         <option value="parallelwiderstand">Parallelschaltung (1/Rges = 1/R1 + 1/R2)</option>
+         <option value="kondensator">Kondensator (C = Q/U)</option>
+         <option value="kondensatorEnergie">Energie Kondensator (E = 0.5 * C * U²)</option>
+         <option value="leistungR">Leistung über Widerstand (P = R*I²)</option>
+         <option value="blindKapazitiv">Kapazitive Blindreaktanz (Xc = 1/(2π f C))</option>
+         <option value="blindInduktiv">Induktive Blindreaktanz (XL = 2π f L)</option>
+         <option value="induktivSpannung">Induktivität Spannung (U = L*(ΔI/Δt))</option>
+         <option value="grenzfreqRC">RC Grenzfrequenz (fg = 1/(2π R C))</option>
+         <option value="grenzfreqRL">RL Grenzfrequenz (fg = R/(2π L))</option>
+         <option value="spulenEnergie">Energie in Spule (E = 0.5 * L * I²)</option>
+         <option value="zeitKonstanteRC">Zeitkonstante RC (τ = R*C)</option>
+       </select>
+
+       <div id="inputs" style="margin-top:15px;"></div>
+
+       <div id="ergebnis" style="
+          display:none;
+          margin-top:15px;
+          padding:15px;
+          border-radius:10px;
+          background:#f0f0f0;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          text-align:center;
+          font-size:1.3em;
+          font-weight:bold;
+          color:#333;
+          transition: all 0.5s ease;
+       "></div>
+
+       <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+         <button class="primary" onclick="berechne()">Berechnen</button>
+         <button class="secondary" onclick="showStats()">📊 Statistik</button>
+
+       </div>
+    </div>
+  </div>
+`;
+}
+
+
+const app = document.getElementById("app");
+let currentTest = null;
+let currentQuestion = 0;
+let mistakes = [];
+let globalMistakes = JSON.parse(localStorage.getItem("global_mistakes") || "[]");
+let startTime = null;
+let player = JSON.parse(localStorage.getItem("player")) || {
+  points: 0,   // Gesamte Punkte
+  xp: 0,       // Erfahrungspunkte
+  level: 1,    // Aktuelles Level
+  xpToNext: 100 // XP benötigt für nächstes Level
+};
+function savePlayer() {
+  localStorage.setItem("player", JSON.stringify(player));
+}
+
+const formeln = {
+ohm: {
+  name: "Ohmsches Gesetz",
+  vars: ["R", "U", "I"],
+  berechnen: (vals) => {
+    const {R, U, I} = vals;
+    if (R === null) return {result: U/I, field: "R"};
+    if (U === null) return {result: R*I, field: "U"};
+    if (I === null) return {result: U/R, field: "I"};
+  }
+},
+
+leistung: {
+  name: "Leistung (P = U * I)",
+  vars: ["P", "U", "I"],
+  berechnen: (vals) => {
+    const {P, U, I} = vals;
+    if (P === null) return {result: U*I, field: "P"};
+    if (U === null) return {result: P/I, field: "U"};
+    if (I === null) return {result: P/U, field: "I"};
+  }
+},
+
+spannungTeiler: {
+  name: "Spannungsteiler (Ua = Ue * R2 / (R1 + R2))",
+  vars: ["Ua", "Ue", "R1", "R2"],
+  berechnen: (vals) => {
+    const {Ua, Ue, R1, R2} = vals;
+    if (Ua === null) return {result: Ue * (R2/(R1+R2)), field: "Ua"};
+    if (Ue === null) return {result: Ua*(R1+R2)/R2, field: "Ue"};
+    if (R1 === null) return {result: (Ue*R2/Ua) - R2, field: "R1"};
+    if (R2 === null) return {result: (Ue*R1/Ua) - R1, field: "R2"};
+  }
+},
+
+reihenwiderstand: {
+  name: "Reihenschaltung Widerstände",
+  vars: ["Rges", "R1", "R2"],
+  berechnen: (vals) => {
+    const {Rges, R1, R2} = vals;
+    if (Rges === null) return {result: R1 + R2, field: "Rges"};
+    if (R1 === null)   return {result: Rges - R2, field: "R1"};
+    if (R2 === null)   return {result: Rges - R1, field: "R2"};
+  }
+},
+
+parallelwiderstand: {
+  name: "Parallelschaltung Widerstände",
+  vars: ["Rges", "R1", "R2"],
+  berechnen: (vals) => {
+    const {Rges, R1, R2} = vals;
+    if (Rges === null) return {result: 1/(1/R1 + 1/R2), field: "Rges"};
+    if (R1 === null)   return {result: 1/(1/Rges - 1/R2), field: "R1"};
+    if (R2 === null)   return {result: 1/(1/Rges - 1/R1), field: "R2"};
+  }
+},
+
+kondensator: {
+  name: "Kondensator (C = Q/U)",
+  vars: ["C", "Q", "U"],
+  berechnen: (vals) => {
+    const {C, Q, U} = vals;
+    if (C === null) return {result: Q/U, field: "C"};
+    if (Q === null) return {result: C*U, field: "Q"};
+    if (U === null) return {result: Q/C, field: "U"};
+  }
+},
+
+kondensatorEnergie: {
+  name: "Energie Kondensator (E=0.5*C*U²)",
+  vars: ["E", "C", "U"],
+  berechnen: (vals) => {
+    const {E, C, U} = vals;
+    if (E === null) return {result: 0.5 * C * U * U, field: "E"};
+    if (C === null) return {result: 2*E/(U*U), field: "C"};
+    if (U === null) return {result: Math.sqrt(2*E/C), field: "U"};
+  }
+},
+
+leistungR: {
+  name: "Leistung über Widerstand (P = R * I²)",
+  vars: ["P", "R", "I"],
+  berechnen: (vals) => {
+    const {P, R, I} = vals;
+    if (P === null) return {result: R * I * I, field: "P"};
+    if (R === null) return {result: P/(I*I), field: "R"};
+    if (I === null) return {result: Math.sqrt(P/R), field: "I"};
+  }
+},
+
+
+};
+
+formeln.blindKapazitiv = {
+  name: "Kapazitive Blindreaktanz (Xc = 1/(2π f C))",
+  vars: ["Xc", "f", "C"],
+  berechnen: (vals) => {
+    const {Xc, f, C} = vals;
+    if (Xc === null) return {result: 1/(2*Math.PI*f*C), field: "Xc"};
+    if (f  === null) return {result: 1/(2*Math.PI*Xc*C), field: "f"};
+    if (C  === null) return {result: 1/(2*Math.PI*Xc*f), field: "C"};
+  }
+};
+
+formeln.blindInduktiv = {
+  name: "Induktive Blindreaktanz (XL = 2π f L)",
+  vars: ["XL", "f", "L"],
+  berechnen: (vals) => {
+    const {XL, f, L} = vals;
+    if (XL === null) return {result: 2*Math.PI*f*L, field: "XL"};
+    if (f  === null) return {result: XL/(2*Math.PI*L), field: "f"};
+    if (L  === null) return {result: XL/(2*Math.PI*f), field: "L"};
+  }
+};
+
+formeln.induktivSpannung = {
+  name: "Induktivität Spannung (U = L * (ΔI/Δt))",
+  vars: ["U", "L", "dI", "dt"],
+  berechnen: (vals) => {
+    const {U, L, dI, dt} = vals;
+    if (U  === null) return {result: L*(dI/dt), field: "U"};
+    if (L  === null) return {result: U/(dI/dt), field: "L"};
+    if (dI === null) return {result: (U/L)*dt, field: "dI"};
+    if (dt === null) return {result: dI/(U/L), field: "dt"};
+  }
+}
+
+formeln.grenzfreqRC = {
+  name: "RC Grenzfrequenz (fg = 1/(2π R C))",
+  vars: ["fg", "R", "C"],
+  berechnen: (vals) => {
+    const {fg, R, C} = vals;
+    if (fg === null) return {result: 1/(2*Math.PI*R*C), field: "fg"};
+    if (R  === null) return {result: 1/(2*Math.PI*fg*C), field: "R"};
+    if (C  === null) return {result: 1/(2*Math.PI*fg*R), field: "C"};
+  }
+};
+
+formeln.grenzfreqRL = {
+  name: "RL Grenzfrequenz (fg = R/(2π L))",
+  vars: ["fg", "R", "L"],
+  berechnen: (vals) => {
+    const {fg, R, L} = vals;
+    if (fg === null) return {result: R/(2*Math.PI*L), field: "fg"};
+    if (R  === null) return {result: fg*(2*Math.PI*L), field: "R"};
+    if (L  === null) return {result: R/(2*Math.PI*fg), field: "L"};
+  }
+};
+
+formeln.spulenEnergie = {
+  name: "Energie in Spule (E = 0.5 * L * I²)",
+  vars: ["E", "L", "I"],
+  berechnen: (vals) => {
+    const {E, L, I} = vals;
+    if (E === null) return {result: 0.5 * L * I * I, field: "E"};
+    if (L === null) return {result: (2*E)/(I*I), field: "L"};
+    if (I === null) return {result: Math.sqrt((2*E)/L), field: "I"};
+  }
+};
+
+formeln.zeitKonstanteRC = {
+  name: "Zeitkonstante RC (τ = R * C)",
+  vars: ["tau", "R", "C"],
+  berechnen: (vals) => {
+    const {tau, R, C} = vals;
+    if (tau === null) return {result: R*C, field: "tau"};
+    if (R   === null) return {result: tau/C, field: "R"};
+    if (C   === null) return {result: tau/R, field: "C"};
+  }
+};
+
+function updateFormelInputs() {
+  const sel = document.getElementById("formelSelect").value;
+  if (!sel || !formeln[sel]) {
+    document.getElementById("inputs").innerHTML = "";
+    return;
+  }
+
+  const vars = formeln[sel].vars;
+  const inputsDiv = document.getElementById("inputs");
+  inputsDiv.innerHTML = "";
+
+  vars.forEach(v => {
+    const wrapper = document.createElement("div");
+    wrapper.style.margin = "6px 0";
+
+    const label = document.createElement("label");
+    label.htmlFor = v;
+    label.textContent = v + " (leer lassen, was berechnet werden soll)";
+    label.style.display = "block";
+    label.style.fontSize = "0.9rem";
+    wrapper.appendChild(label);
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.id = v;
+    input.placeholder = v;
+    input.className = "input";
+    input.style.width = "100%";
+    input.style.padding = "8px";
+    input.style.boxSizing = "border-box";
+    wrapper.appendChild(input);
+
+    inputsDiv.appendChild(wrapper);
+  });
+
+  // Ergebnis-Box zurücksetzen
+  const ergebnisDiv = document.getElementById("ergebnis");
+  if (ergebnisDiv) {
+    ergebnisDiv.style.display = "none";
+    ergebnisDiv.innerText = "";
+  }
+}
+function berechne() {
+  const sel = document.getElementById("formelSelect").value;
+  const ergebnisDiv = document.getElementById("ergebnis");
+  if (!ergebnisDiv) return;
+
+  ergebnisDiv.style.display = "block";
+
+  if (!sel || !formeln[sel]) {
+    ergebnisDiv.innerText = "Bitte zuerst eine Formel auswählen!";
+    return;
+  }
+
+  const vars = formeln[sel].vars;
+  const vals = {};
+  vars.forEach(v => {
+    const el = document.getElementById(v);
+    const raw = el ? el.value : "";
+    const num = raw === "" ? null : parseFloat(raw);
+    vals[v] = (num === null || isNaN(num)) ? null : num;
+  });
+
+  console.log("berechne: eingelesene Werte =", vals);
+
+ const nullKeys = Object.keys(vals).filter(k => vals[k] === null);
+  if (nullKeys.length !== 1) {
+    ergebnisDiv.innerText = "Bitte genau eine Variable leer lassen (aktuell: " + nullKeys.length + ").";
+    return;
+  }
+
+  let res;
+  try {
+    res = formeln[sel].berechnen(vals);
+  } catch (e) {
+    console.error("Fehler in formeln[sel].berechnen:", e);
+    ergebnisDiv.innerText = "Fehler bei der Berechnung (siehe Konsole).";
+    return;
+  }
+
+  console.log("berechne: result =", res);
+
+  if (!res || typeof res.result === "undefined") {
+    ergebnisDiv.innerText = "Fehler: Formel hat kein Ergebnis zurückgegeben.";
+    return;
+  }
+
+  if (!isFinite(res.result)) {
+    ergebnisDiv.innerText = "Ergebnis ungültig (Division durch 0 oder NaN).";
+    return;
+  }
+
+  const out = (Math.abs(res.result - Math.round(res.result)) < 1e-9)
+    ? String(Math.round(res.result))
+    : res.result.toFixed(2);
+
+  ergebnisDiv.innerText = `${res.field} = ${out}`;
+}
+
+function backToMenu() {
+  document.getElementById("formelCard").style.display = "none";
+  showYearSelection(); // oder deine Funktion, die zurück zur Übersicht geht
+}
+
+let globalExam = null;
+let currentQuestionIndex = 0;
+let examMistakes = [];
+let examStartTime = 0;
+let examTimer = null;
+
+
+const allQuestions = tests.flatMap(test => test.questions);
+const EXAM_TIME_LIMIT = 15 * 60 * 1000; 
+const EXAM_QUESTION_COUNT = 25; 
+
+function showMainMenu() {
+    app.innerHTML = `
+    <div class="card">
+        <h1>📚 Lernprogramm</h1>
+        <button class="primary" onclick="startGlobalExam()">📝 Globale Prüfung starten</button>
+    </div>`;
+    globalExam = null;
+    currentQuestionIndex = 0;
+    examMistakes = [];
+}
+
+function startGlobalExam() {
+    if (!Array.isArray(allQuestions) || allQuestions.length === 0) {
+        alert("Keine Fragen in tests.js gefunden!");
+        return;
+    }
+
+    globalExam = shuffleArray(allQuestions).slice(0, EXAM_QUESTION_COUNT);
+
+    currentQuestionIndex = 0;
+    examMistakes = [];
+    examStartTime = Date.now();
+
+    examTimer = setTimeout(() => {
+        alert("⏰ Zeitlimit erreicht!");
+        showExamResults();
+    }, EXAM_TIME_LIMIT);
+
+    showExamQuestion();
+}
+function showExamQuestion() {
+    const q = globalExam[currentQuestionIndex];
+
+    let html = `<div class="card">
+        <h2>Frage ${currentQuestionIndex + 1} / ${globalExam.length}</h2>
+        <p>${q.question}</p>`;
+
+    if (q.image) {
+        html += `<img src="${q.image}" class="question-image" style="max-width: 100%; margin: 10px 0;">`;
+    }
+    if (q.options) {
+        q.options.forEach(option => {
+            html += `<button class="secondary" onclick="submitAnswer('${option}')">${option}</button>`;
+        });
+    }
+else if (q.type === "text") {
+    html += `
+        <textarea id="examAnswer" rows="4" placeholder="Antwort eingeben..."></textarea>
+        <button class="primary" onclick="submitAnswer()">Antwort prüfen</button>
+    `;
+}
+else if (q.type === "calc") {
+    html += `
+        <input type="number" id="examAnswer" placeholder="Ergebnis eingeben...">
+        <button class="primary" onclick="submitAnswer()">Antwort prüfen</button>
+    `;
+}
+
+    html += `<p>⏱ Verbleibende Zeit: <span id="timeLeft"></span></p></div>`;
+    app.innerHTML = html;
+
+    updateTimeLeft();
+  updateUserEmail();
+}
+function updateTimeLeft() {
+    const timePassed = Date.now() - examStartTime;
+    const timeLeft = Math.max(0, EXAM_TIME_LIMIT - timePassed);
+    const minutes = Math.floor(timeLeft / 60000);
+    const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+    const el = document.getElementById("timeLeft");
+    if (el) el.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    if (timeLeft > 0) setTimeout(updateTimeLeft, 1000);
+}
+
+function submitAnswer(selected) {
+    const q = globalExam[currentQuestionIndex];
+    let answer = selected;
+    if (!answer && (q.type === "text" || q.type === "calc")) {
+        answer = document.getElementById("examAnswer").value.trim();
+    }
+    if (!answer) return;
+
+    let correct = false;
+    if (q.options) {
+        correct = answer === q.correct;
+    } else if (q.type === "text") {
+        correct = isAnswerCorrect(answer, q);
+    } else if (q.type === "calc") {
+        const userValue = parseFloat(answer.replace(",", "."));
+        const expected = q.calcResult;
+        const tol = q.tolerance || 0.05;
+        correct = Math.abs(userValue - expected) <= expected * tol;
+    }
+
+    // Prüfen, ob Frage schon in examMistakes existiert
+    const existingIndex = examMistakes.findIndex(m => m.question === q.question);
+    if (!correct) {
+        const mistakeEntry = {
+            question: q.question,
+            userAnswer: answer,
+            correct: q.correct || q.correctKeywords?.join(", ") || q.calcResult
+        };
+        if (existingIndex >= 0) {
+            examMistakes[existingIndex] = mistakeEntry; // überschreiben
+        } else {
+            examMistakes.push(mistakeEntry); // neu einfügen
+        }
+    } else if (existingIndex >= 0) {
+        examMistakes.splice(existingIndex, 1); // alte falsche Antwort entfernen, wenn korrekt
+    }
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < globalExam.length) {
+        showExamQuestion();
+    } else {
+        showExamResults();
+    }
+}
+
+function showExamResults() {
+    clearTimeout(examTimer);
+
+    const total = globalExam.length;
+    const wrong = examMistakes.length;
+    const correct = total - wrong;
+
+    let html = `
+    <div class="card">
+        <h2>📊 Prüfung beendet</h2>
+
+        <div style="padding:12px; background:#e6ffe6; border-left:6px solid #34c759; border-radius:10px; margin-bottom:15px;">
+            🟢 <b>Richtige Antworten:</b> ${correct} / ${total}
+        </div>
+
+        <div style="padding:12px; background:#ffe6e6; border-left:6px solid #ff3b30; border-radius:10px; margin-bottom:20px;">
+            🔴 <b>Falsche Antworten:</b> ${wrong}
+        </div>
+    `;
+
+    if (wrong > 0) {
+        html += `<h3>❌ Deine Fehler:</h3>`;
+
+        examMistakes.forEach(m => {
+            html += `
+            <div style="
+                background:#fff4f4;
+                border:1px solid #ffb3b3;
+                border-radius:12px;
+                padding:12px;
+                margin-bottom:12px;
+            ">
+                <p><b>❓ Frage:</b><br>${m.question}</p>
+
+                <p style="color:#ff3b30;"><b>🔴 Deine Antwort:</b> ${m.userAnswer}</p>
+
+                <p style="color:#34c759;"><b>🟢 Richtige Antwort:</b> ${m.correct}</p>
+            </div>
+            `;
+        });
+    }
+
+
+html += `<button class="secondary" onclick="
+    globalExam = null;
+    currentQuestionIndex = 0;
+    examMistakes = [];
+    showYearSelection();
+">🔙 Zurück zum Hauptmenü</button></div>`;
+app.innerHTML = html;
+
+
+}
+
+function shuffleArray(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+}
+
+function shuffleArray(arr) { return arr.sort(() => Math.random() - 0.5); }
+function levenshtein(a, b) {
+  const matrix = Array.from({ length: a.length + 1 }, () => []);
+  for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+  for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+    }
+  }
+  return matrix[a.length][b.length];
+}
+
+function isAnswerCorrect(answer, question) {
+  if (question.correctKeywords && Array.isArray(question.correctKeywords)) {
+    const userText = answer.toLowerCase();
+    let hits = 0;
+
+    question.correctKeywords.forEach(keyword => {
+      if (userText.includes(keyword.toLowerCase())) hits++;
+    });
+
+    // Mindestens 60% der Keywords müssen vorkommen
+    return hits >= Math.ceil(question.correctKeywords.length * 0.6);
+  } else if (question.correct) {
+    const user = answer.trim().toLowerCase();
+    const correct = question.correct.trim().toLowerCase();
+    // erlaubt kleine Tippfehler
+    return user === correct || levenshtein(user, correct) <= 1;
+  }
+
+  return false;
+}
+
+const lernThemen = [
+  { name: "Grundlagen der Elektrotechnik", unterthemen: [
+      "Spannung, Strom & Widerstand",
+      "Ohmsches Gesetz",
+      "Reihen- & Parallelschaltung",
+      "Schutzmaßnahmen nach VDE 0100",
+      "Leistung und Energie"
+    ]
+  },
+  { name: "Schaltpläne & Symbole", unterthemen: [
+      "Stromlaufpläne lesen",
+      "Schaltzeichen",
+      "Installationspläne",
+      "Leitungsquerschnitt & Absicherung"
+    ]
+  },
+  { name: "Messtechnik", unterthemen: [
+      "Multimeter richtig benutzen",
+      "Messfehler vermeiden",
+      "Messgerätearten"
+    ]
+  },
+  { name: "Sicherheitsregeln", unterthemen: [
+      "5 Sicherheitsregeln",
+      "PSA – Persönliche Schutzausrüstung",
+      "Unfallverhütung"
+    ]
+  },
+  { name: "Schaltungs Regelungen", unterthemen: [
+      "<b>Reihenschaltung</b> R, L und C",
+       "<b>Parallelschaltung</b> R, L und C",
+    "<b> Zusammenhang </b> zwischen Wirk-, Blind- und Scheinleistung",
+    ]
+  }
+
+];
+
+function checkAnswer(answer) {
+  const q = currentTest.questions[currentQuestion];
+  const correct = q.options ? answer === q.correct : isAnswerCorrect(answer, q);
+
+  // Prüfen, ob Frage schon in mistakes existiert
+  const existingIndex = mistakes.findIndex(m => m.question === q.question);
+  if (!correct) {
+      const mistakeEntry = { ...q, userAnswer: answer, fromTest: currentTest.name };
+      if (existingIndex >= 0) {
+          mistakes[existingIndex] = mistakeEntry; // überschreiben
+      } else {
+          mistakes.push(mistakeEntry);
+      }
+
+      const globalIndex = globalMistakes.findIndex(m => m.question === q.question);
+      if (globalIndex >= 0) {
+          globalMistakes[globalIndex] = mistakeEntry;
+      } else {
+          globalMistakes.push(mistakeEntry);
+      }
+
+      localStorage.setItem("global_mistakes", JSON.stringify(globalMistakes));
+  } else if (existingIndex >= 0) {
+      mistakes.splice(existingIndex, 1); // alten Fehler entfernen
+      const globalIndex = globalMistakes.findIndex(m => m.question === q.question);
+      if (globalIndex >= 0) globalMistakes.splice(globalIndex, 1);
+      localStorage.setItem("global_mistakes", JSON.stringify(globalMistakes));
+  } else {
+      rewardPlayer();
+  }
+
+  currentQuestion++;
+  if (currentQuestion < currentTest.questions.length) {
+    showQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showUnterthemen(index) {
+  const thema = lernThemen[index];
+  let html = `<div class="card"><h2>${thema.name}</h2><p>Unterthemen:</p>`;
+  thema.unterthemen.forEach(u => {
+    html += `<button class="secondary" onclick="zeigeLerninhalt('${thema.name}','${u}')">${u}</button>`;
+  });
+  html += `<button class="secondary" onclick="showLernThemen()">🔙 Zurück</button></div>`;
+  app.innerHTML = html;
+}
+
+function zeigeLerninhalt(thema, unterthema) {
+  let inhalt = "";
+  if (unterthema === "Spannung, Strom & Widerstand") {
+    inhalt = `
+      <h2>⚡ Spannung, Strom & Widerstand</h2>
+      <p>Die <b>Spannung (U)</b> ist die treibende Kraft, die Elektronen in Bewegung setzt — vergleichbar mit dem Wasserdruck in einer Leitung.</p>
+      <p>Der <b>Strom (I)</b> ist die Bewegung der Elektronen selbst – also der Fluss der Ladungsträger.</p>
+      <p>Der <b>Widerstand (R)</b> ist das, was den Stromfluss behindert. Er hängt z. B. von der Länge, dem Material und dem Querschnitt eines Leiters ab.</p>
+      <p>Einfach gesagt: Spannung = Druck 💨, Strom = Fluss 🌊, Widerstand = Engstelle 🚧.</p>
+    `;
+  }
+  
+  else if (unterthema === "Ohmsches Gesetz") {
+    inhalt = `
+      <h2>⚡ Ohmsches Gesetz</h2>
+      <p><b>U = R × I</b></p>
+      <p>Das Ohmsche Gesetz beschreibt den linearen Zusammenhang zwischen Spannung, Strom und Widerstand.</p>
+      <ul>
+        <li>Erhöhe die Spannung → der Strom steigt (bei gleichem Widerstand).</li>
+        <li>Erhöhe den Widerstand → der Strom sinkt (bei gleicher Spannung).</li>
+      </ul>
+      <p>Typische Anwendung: Berechnung von Vorwiderständen bei LEDs oder Prüfung von Stromstärken in Schaltungen.</p>
+    `;
+  } 
+  
+  else if (unterthema === "Reihen- & Parallelschaltung") {
+    inhalt = `
+      <h2>🔗 Reihen- & Parallelschaltung</h2>
+      <p><b>Reihenschaltung:</b> Alle Bauteile sind hintereinander geschaltet → der gleiche Strom fließt durch alle, die Spannung teilt sich auf.</p>
+      <p><b>Parallelschaltung:</b> Alle Bauteile sind nebeneinander geschaltet → die Spannung ist gleich, der Strom teilt sich auf.</p>
+      <img src="Reihenschaltung.png" alt="Reihenschaltung">
+      <img src="Parallelschaltung.png" alt="Parallelschaltung">
+      <p><b>Merke:</b> In der Praxis sind die meisten Schaltungen Kombinationen aus beiden Arten (gemischte Schaltungen).</p>
+    `;
+  } 
+  
+  else if (unterthema === "Schutzmaßnahmen nach VDE 0100") {
+    inhalt = `
+      <h2>🧯 Schutzmaßnahmen nach VDE 0100</h2>
+      <p>Die wichtigsten Schutzmaßnahmen sind:</p>
+      <ul>
+        <li><b>Schutzerdung (PE):</b> Ableitung von Fehlerströmen</li>
+        <li><b>Schutztrennung:</b> Trennung von Stromkreisen durch Trenntrafo</li>
+        <li><b>FI-Schutzschalter (RCD):</b> Trennt bei Fehlerströmen über 30 mA</li>
+        <li><b>Kleinspannung (SELV/PELV):</b> Sicher durch niedrige Spannungen</li>
+      </ul>
+      <p><b>Ziel:</b> Schutz gegen elektrischen Schlag.</p>
+    `;
+  }
+
+  else if (unterthema === "Leistung und Energie") {
+    inhalt = `
+      <h2>⚡ Leistung & Energie</h2>
+      <p>Die elektrische <b>Leistung (P)</b> zeigt, wie viel Energie pro Zeit umgesetzt wird: <b>P = U × I</b></p>
+      <p>Die <b>Energie (E)</b> ergibt sich aus Leistung × Zeit: <b>E = P × t</b></p>
+      <p>Beispiel: Eine 60 W Glühbirne, die 10 Stunden leuchtet, verbraucht <b>600 Wh = 0,6 kWh</b>.</p>
+      <p><b>Merke:</b> 1 kWh = 1000 W über 1 Stunde → das ist die Einheit, die auf deiner Stromrechnung steht.</p>
+    `;
+  }
+
+else if (unterthema === "Stromlaufpläne lesen") {
+    inhalt = `
+      <h2>📄 Stromlaufpläne lesen</h2>
+      <p>Stromlaufpläne zeigen die elektrische Verbindung zwischen Bauteilen – sie sind das „Alphabet“ der Elektronik.</p>
+      <p>Sie enthalten Symbole, Verbindungslinien und Kennzeichnungen, um zu verstehen, <b>wie Strom fließt</b> und <b>wie Geräte funktionieren</b>.</p>
+
+      <h3>🔧 Wichtige Symbole</h3>
+      <ul>
+        <li>🔋 <b>Spannungsquelle</b> – Darstellung von Batterie, Netzteil oder Versorgung.</li>
+        <li>💡 <b>Lampe/Verbraucher</b> – zeigt eine Last im Stromkreis.</li>
+        <li>🔌 <b>Schalter</b> – öffnet oder schließt den Stromkreis.</li>
+        <li>🌀 <b>Spule</b> – Bestandteil von Motoren, Relais oder Filtern.</li>
+        <li>⬜ <b>Widerstand</b> – begrenzt den Stromfluss.</li>
+        <li>⚡ <b>Sicherungen</b> – schützen vor Überstrom.</li>
+      </ul>
+
+      <h3>🧭 Wie du einen Stromlaufplan liest</h3>
+      <ol>
+        <li><b>Starte bei der Spannungsquelle</b> – verfolge den Pfad von + nach -.</li>
+        <li><b>Erkenne die Schalter</b> – bestimmen, wann der Strom fließen kann.</li>
+        <li><b>Suche nach Verbrauchern</b> – Lampen, Motoren, Steuergeräte usw.</li>
+        <li><b>Beachte Sicherungen</b> – wichtig für Fehlersuche.</li>
+        <li><b>Symbolnummern beachten</b> – sie führen zu anderen Stellen im Plan.</li>
+      </ol>
+
+      <h3>💡 Tipp: Immer von links nach rechts interpretieren</h3>
+      <p>Die meisten Stromlaufpläne folgen einem logischen Signalfluss. Das macht die Analyse erheblich leichter.</p>
+
+      <button onclick="zeigeUnterauswahl('Elektronik-Grundlagen')">⬅️ Zurück</button>
+    `;
+}
+
+  else if (unterthema === "Leitungsquerschnitt & Absicherung") {
+    inhalt = `
+      <h2>🔌 Leitungsquerschnitt & Absicherung</h2>
+      <p>Der Querschnitt einer Leitung bestimmt, wie viel Strom sie sicher führen kann.</p>
+      <ul>
+        <li><b>1,5 mm²</b> → max. 16 A (z. B. Beleuchtung)</li>
+        <li><b>2,5 mm²</b> → max. 20 A (z. B. Steckdosen)</li>
+      </ul>
+      <p>Zu dünne Leitungen führen zu Erwärmung → Brandgefahr!</p>
+      <p><b>Sicherung:</b> schützt Leitung und Anlage vor Überlast und Kurzschluss.</p>
+    `;
+  }
+  
+  else if (unterthema === "Schaltzeichen") {
+    inhalt = `
+      <h2>🔆 Schaltzeichen</h2>
+      <p>Schaltzeichen sind genormte Symbole für elektrische Bauteile (nach DIN EN 60617).</p>
+      <ul>
+        <li>Widerstand – Zickzacklinie</li>
+        <li>Lampe – Kreis mit Kreuz</li>
+        <li>Schalter – Öffnende oder schließende Linie</li>
+        <li>Sicherung – Rechteck mit Strich</li>
+        <li>Motor – Kreis mit M</li>
+      </ul>
+    `;
+  } 
+  
+  else if (unterthema === "Installationspläne") {
+    inhalt = `
+      <h2>🏠 Installationspläne</h2>
+      <p>Installationspläne zeigen Steckdosen, Lampen, Schalter und Leitungsverläufe in Gebäuden.</p>
+      <p>Sie helfen, die elektrische Anlage sicher und normgerecht aufzubauen (nach DIN VDE 0100).</p>
+      <p><b>Hinweis:</b> Immer auf Leitungslängen, Absicherungen und Querschnitte achten!</p>
+    `;
+  }
+
+  else if (unterthema === "Multimeter richtig benutzen") {
+    inhalt = `
+      <h2>🔧 Multimeter</h2>
+      <p>Ein Multimeter misst <b>Spannung (V)</b>, <b>Strom (A)</b> und <b>Widerstand (Ω)</b>.</p>
+      <ul>
+        <li><b>Spannung:</b> Parallel messen</li>
+        <li><b>Strom:</b> In Reihe messen</li>
+        <li><b>Widerstand:</b> Nur im spannungsfreien Zustand messen</li>
+      </ul>
+      <p>Wichtig: Immer den passenden Messbereich einstellen, bevor du misst!</p>
+    `;
+  } 
+  
+  else if (unterthema === "Messfehler vermeiden") {
+    inhalt = `
+      <h2>⚠️ Messfehler vermeiden</h2>
+      <ul>
+        <li>Prüfe immer, ob das Messgerät richtig angeschlossen ist.</li>
+        <li>Vermeide Kontaktfehler und lose Klemmen.</li>
+        <li>Messbereich richtig wählen – zu kleiner Bereich zerstört das Gerät!</li>
+        <li>Nur in spannungsfreien Anlagen Widerstände messen.</li>
+      </ul>
+    `;
+  } 
+  
+  else if (unterthema === "Messgerätearten") {
+    inhalt = `
+      <h2>📟 Messgerätearten</h2>
+      <ul>
+        <li>Multimeter – Spannung, Strom, Widerstand</li>
+        <li>Oszilloskop – zeitabhängige Signale</li>
+        <li>Stromzange – Strommessung ohne Unterbrechung des Stromkreises</li>
+        <li>Spannungsprüfer – einfache Spannungsprüfung (z. B. Duspol)</li>
+      </ul>
+    `;
+  }
+
+else if (unterthema === "Reihenschaltung R, L und C") {
+  inhalt = `
+    <h2>🔄 Reihenschaltung von R, L und C</h2>
+    <p>In einer Reihenschaltung aus <b>Wirkwiderstand (R)</b>, <b>induktivem Blindwiderstand (X<sub>L</sub>)</b> und <b>kapazitivem Blindwiderstand (X<sub>C</sub>)</b> fließt überall der <b>gleiche Strom</b>.</p>
+    
+    <p>Die Spannungen an den einzelnen Bauteilen addieren sich vektoriell zur Gesamtspannung:</p>
+    <p><b>U = √(U<sub>R</sub>² + (U<sub>L</sub> − U<sub>C</sub>)²)</b></p>
+
+    <p>Da die Spannungen an L und C um 180° phasenverschoben sind, heben sie sich teilweise gegenseitig auf.</p>
+    
+    <p>Die <b>Gesamtimpedanz</b> der Schaltung lautet:</p>
+    <p><b>Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²)</b></p>
+
+    <p>und der Strom ergibt sich zu:</p>
+    <p><b>I = U / Z</b></p>
+
+    <p><b>Phasenverschiebung:</b> Zwischen Spannung und Strom besteht der Phasenwinkel <b>φ</b> mit</p>
+    <p><b>tan φ = (X<sub>L</sub> − X<sub>C</sub>) / R</b></p>
+
+    <p><b>Besonderheit:</b> Wenn X<sub>L</sub> = X<sub>C</sub>, liegt <b>Resonanz</b> vor → die Schaltung verhält sich rein ohmsch (φ = 0°).</p>
+
+    <p>💡 <b>Merke:</b> In der Reihenschaltung addieren sich Widerstände vektoriell, nicht einfach arithmetisch!</p>
+  `;
+}
+
+
+else if (unterthema === "Parallelschaltung R, L und C") {
+  inhalt = `
+    <h2>🔁 Parallelschaltung von R, L und C</h2>
+    <p>In einer Parallelschaltung aus <b>Wirkwiderstand (R)</b>, <b>induktivem Blindwiderstand (X<sub>L</sub>)</b> und <b>kapazitivem Blindwiderstand (X<sub>C</sub>)</b> liegt an allen Zweigen die <b>gleiche Spannung</b> an.</p>
+    
+    <p>Die <b>Ströme</b> in den einzelnen Zweigen sind unterschiedlich und addieren sich vektoriell zum <b>Gesamtstrom</b>:</p>
+    <p><b>I = √(I<sub>R</sub>² + (I<sub>C</sub> − I<sub>L</sub>)²)</b></p>
+
+    <p>Da der Strom durch die Spule (L) der Spannung <b>nachläuft</b> und der Strom durch den Kondensator (C) der Spannung <b>voreilt</b>, heben sich ihre Blindanteile teilweise gegenseitig auf.</p>
+
+    <p>Die <b>Gesamtadmittanz</b> (Kehrwert der Impedanz) ergibt sich zu:</p>
+    <p><b>Y = √(G² + (B<sub>C</sub> − B<sub>L</sub>)²)</b></p>
+    <p>mit <b>G = 1/R</b> (Leitwert), <b>B<sub>L</sub> = 1/X<sub>L</sub></b> und <b>B<sub>C</sub> = 1/X<sub>C</sub></b>.</p>
+
+    <p>Die <b>Gesamtimpedanz</b> ist dann:</p>
+    <p><b>Z = 1 / Y</b></p>
+
+    <p><b>Phasenverschiebung:</b> Der Phasenwinkel <b>φ</b> ergibt sich zu:</p>
+    <p><b>tan φ = (B<sub>C</sub> − B<sub>L</sub>) / G</b></p>
+
+    <p><b>Besonderheit:</b> Wenn B<sub>L</sub> = B<sub>C</sub>, liegt <b>Parallelschwingkreis-Resonanz</b> vor → der Gesamtstrom ist minimal und Spannung und Strom sind in Phase (φ = 0°).</p>
+
+    <p>💡 <b>Merke:</b> In der Parallelschaltung addieren sich <b>Ströme</b> (nicht Spannungen!), und die Gesamtimpedanz wird über die <b>Admittanz</b> berechnet.</p>
+  `;
+}
+
+else if (unterthema === "Wirk-, Blind- und Scheinleistung") {
+  inhalt = `
+    <h2>⚙️ Wirk-, Blind- und Scheinleistung</h2>
+    <p>In Wechselstromkreisen mit Widerstand, Spule und Kondensator treten drei Leistungsarten auf:</p>
+
+    <ul>
+      <li><b>Wirkleistung (P)</b> – tatsächlich umgesetzte Leistung in Wärme oder Arbeit</li>
+      <li><b>Blindleistung (Q)</b> – pendelnde Leistung zwischen Quelle und Feld (keine Energieumwandlung)</li>
+      <li><b>Scheinleistung (S)</b> – gesamte Leistung, die das Netz „bereitstellt“</li>
+    </ul>
+
+    <p>Diese drei Größen stehen im sogenannten <b>Leistungsdreieck</b> in Beziehung:</p>
+    <p><b>S² = P² + Q²</b></p>
+
+    <p>und mit dem Phasenwinkel φ zwischen Spannung und Strom gilt:</p>
+    <p>
+      <b>P = S × cosφ</b><br>
+      <b>Q = S × sinφ</b>
+    </p>
+
+    <p><b>Einheiten:</b><br>
+      P in <b>Watt (W)</b> → Wirkleistung<br>
+      Q in <b>Var</b> → Blindleistung<br>
+      S in <b>VA</b> → Scheinleistung
+    </p>
+
+    <h3>🔧 Praxisbeispiel</h3>
+    <p>Ein Elektromotor hat eine Scheinleistung von <b>S = 1000 VA</b> und einen Leistungsfaktor von <b>cosφ = 0,8</b>.</p>
+    <p>Dann gilt:</p>
+    <ul>
+      <li><b>Wirkleistung:</b> P = S × cosφ = 1000 × 0,8 = <b>800 W</b></li>
+      <li><b>Blindleistung:</b> Q = √(S² − P²) = √(1000² − 800²) = <b>600 Var</b></li>
+    </ul>
+
+    <p>👉 Das bedeutet: Der Motor „verbraucht“ 1000 VA aus dem Netz, aber nur 800 W werden in nutzbare Arbeit umgesetzt.  
+    600 Var fließen ständig hin und her – sie erzeugen keine Arbeit, aber belasten die Leitungen.</p>
+
+    <p>💡 <b>Leistungsfaktor:</b> Der Cosinus des Phasenwinkels (<b>cosφ</b>) beschreibt, wie viel Anteil der Scheinleistung in Wirkleistung umgewandelt wird.  
+    <b>cosφ = 1</b> → rein ohmsche Last (keine Blindleistung).<br>
+    <b>cosφ &lt; 1</b> → Blindleistungsanteil vorhanden (z. B. Motor, Spule, Kondensator).</p>
+
+    <p><b>Merke:</b> Nur die Wirkleistung P verrichtet tatsächlich Arbeit (z. B. Motorleistung, Heizung).  
+    Die Blindleistung Q belastet das Netz – deshalb wird in der Industrie oft <b>Blindleistungskompensation</b> mit Kondensatoren eingesetzt.</p>
+  `;
+}
+
+  else if (unterthema === "5 Sicherheitsregeln") {
+    inhalt = `
+      <h2>⚠️ Die 5 Sicherheitsregeln</h2>
+      <ol>
+        <li>Freischalten (Spannungsquelle trennen)</li>
+        <li>Gegen Wiedereinschalten sichern</li>
+        <li>Spannungsfreiheit feststellen</li>
+        <li>Erden und kurzschließen</li>
+        <li>Benachbarte, unter Spannung stehende Teile abdecken oder abschranken</li>
+      </ol>
+      <p><b>Merke:</b> Diese Regeln schützen Leben – sie sind in der VDE 0105 festgelegt!</p>
+    `;
+  } 
+  
+  else if (unterthema === "PSA – Persönliche Schutzausrüstung") {
+    inhalt = `
+      <h2>🦺 Persönliche Schutzausrüstung (PSA)</h2>
+      <p>Dazu gehören:</p>
+      <ul>
+        <li>Isolierte Handschuhe</li>
+        <li>Schutzbrille</li>
+        <li>Isolierte Werkzeuge</li>
+        <li>Sicherheitsschuhe mit isolierender Sohle</li>
+      </ul>
+      <p><b>Wichtig:</b> PSA muss regelmäßig geprüft und bei Beschädigung sofort ersetzt werden!</p>
+    `;
+  } 
+  
+  else if (unterthema === "Unfallverhütung") {
+    inhalt = `
+      <h2>🛡️ Unfallverhütung</h2>
+      <p>Der beste Schutz ist Aufmerksamkeit. Gefahren früh erkennen und vermeiden:</p>
+      <ul>
+        <li>Keine Arbeiten unter Spannung ohne Schulung</li>
+        <li>Nur geprüfte Werkzeuge verwenden</li>
+        <li>Fehler sofort melden</li>
+        <li>Sauberkeit & Ordnung am Arbeitsplatz</li>
+      </ul>
+      <p><b>Ziel:</b> Sicher arbeiten – keine Verletzungen, keine Gefährdung anderer.</p>
+    `;
+  }
+
+  else if (unterthema === "Schutzmaßnahmen nach VDE 0100") {
+    inhalt = `
+      <h2>🧯 Schutzmaßnahmen nach VDE 0100</h2>
+      <p>Die wichtigsten Schutzmaßnahmen sind:</p>
+      <ul>
+        <li><b>Schutzerdung (PE):</b> Ableitung von Fehlerströmen</li>
+        <li><b>Schutztrennung:</b> Trennung von Stromkreisen durch Trenntrafo</li>
+        <li><b>FI-Schutzschalter (RCD):</b> Trennt bei Fehlerströmen über 30 mA</li>
+        <li><b>Kleinspannung (SELV/PELV):</b> Sicher durch niedrige Spannungen</li>
+      </ul>
+      <p><b>Ziel:</b> Schutz gegen elektrischen Schlag.</p>
+    `;
+  }
+
+  else {
+    inhalt = `
+      <h2>${unterthema}</h2>
+      <p>Für dieses Thema sind noch keine Lerntexte hinzugefügt. 🛠️</p>
+    `;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      ${inhalt}
+      <button class="secondary" onclick="showUnterthemen(${lernThemen.findIndex(t => t.name === thema)})">🔙 Zurück</button>
+      
+    </div>
+  `;
+
+}
+
+
+function showLehrjahre() {
+  app.innerHTML = `
+ <div class="mobile-card">
+      <h2 class="mobile-title">Wähle dein Lehrjahr</h2>
+
+        <button class="year-btn" onclick="showTestForYear(1)">1. Lehrjahr</button>
+        <button class="year-btn" onclick="showTestForYear(2)">2. Lehrjahr</button>
+        <button class="year-btn" onclick="showTestForYear(3)">3. Lehrjahr</button>
+        <button class="secondary" style="margin-top:12px;" onclick="showYearSelection()">🔙 Zurück</button>
+    </div>
+  `;
+}
+
+function showLernThemen() {
+  let html = `<div class="card"><h2>📚 Lernen</h2><p>Wähle ein Thema:</p>`;
+  lernThemen.forEach((thema, i) => {
+    html += `<button class="primary" onclick="showUnterthemen(${i})">${thema.name}</button>`;
+  });
+  html += `<button class="secondary" onclick="showYearSelection()">🔙 Zurück</button></div>`;
+  app.innerHTML = html;
+}
+
+function showTestForYear(year) {
+  const yearTests = tests.filter(t => t.year === year);
+
+  // Wenn es keine Tests für das Lehrjahr gibt
+  if (!yearTests.length) {
+    app.innerHTML = `
+      <div class="card">
+        <h2>${year}. Lehrjahr</h2>
+        <p>Keine Tests vorhanden.</p>
+        <button class="secondary" onclick="showLehrjahre()">🔙 Zurück</button>
+      </div>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <h2>${year}. Lehrjahr</h2>
+
+      ${yearTests.map(test => {
+        const key = "test_" + test.id;
+        const saved = JSON.parse(localStorage.getItem(key)) || {};
+        const done = saved.score === test.questions.length;
+        const time = saved.time || null;
+
+        return `
+          <div class="test-row">
+            <button class="primary" onclick="startTest('${test.id}')">
+              ${test.name}
+              ${done ? '<span class="badge">✅ 100%</span>' : ''}
+            </button>
+
+            ${time ? `<span class="test-time">🕒 ${time} min</span>` : ''}
+          </div>
+        `;
+      }).join("")}
+
+      <button class="secondary" style="margin-top:15px;" onclick="showLehrjahre()">🔙 Zurück</button>
+    </div>
+  `;
+}
+
+function startTest(id) {
+  const test = tests.find(t => t.id === id);
+  if (!test) return alert("Test nicht gefunden!");
+  currentTest = { ...test };
+  currentTest.questions = shuffleArray([...currentTest.questions]);
+  currentQuestion = 0;
+  mistakes = [];
+  startTime = new Date();
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = currentTest.questions[currentQuestion];
+  const progress = ((currentQuestion) / currentTest.questions.length) * 100;
+
+  let html = `
+    <div class="card">
+      <h2>${currentTest.name}</h2>
+      <div class="progress-container"><div class="progress-bar" style="width:${progress}%"></div></div>
+      <p><b>Frage ${currentQuestion + 1}/${currentTest.questions.length}</b></p>
+      <p class="question-text">${q.question}</p>
+  `;
+
+  if (q.image) {
+    html += `
+      <img src="${q.image}" 
+           alt="Fragebild" 
+           style="max-width:100%; margin: 10px 0; border-radius: 12px; box-shadow: var(--shadow);">
+    `;
+  }
+
+  if (q.options && q.options.length) {
+    html += q.options.map(opt => `<button onclick="checkAnswer('${opt}')">${opt}</button>`).join("");
+  } else {
+    html += `
+      <textarea id="textAnswer" placeholder="Antwort eingeben..." rows="3" style="width:100%;padding:10px;font-size:16px;margin:10px 0;border-radius:10px;border:1px solid #ccc;"></textarea>
+      <button class="primary" onclick="submitTextAnswer()">Antwort prüfen</button>
+    `;
+  }
+  html += `
+    <div class="nav-buttons">
+      <button onclick="prevQuestion()" ${currentQuestion===0?'disabled':''}>⬅️ Zurück</button>
+      
+      <button onclick="showYearSelection()">🏠 Home</button>
+      
+    </div>
+  `;
+
+  html += `</div>`;
+  app.innerHTML = html;
+}
+
+function submitTextAnswer() {
+  const val = document.getElementById("textAnswer").value.trim();
+  if (!val) return;
+  checkAnswer(val);
+}
+
+function checkAnswer(answer) {
+  const q = currentTest.questions[currentQuestion];
+  let correct = q.options ? answer === q.correct : isAnswerCorrect(answer, q);
+
+  if (!correct) {
+    // Fehler speichern
+    const mistake = { ...q, userAnswer: answer, fromTest: currentTest.name };
+    mistakes.push(mistake);
+    globalMistakes.push(mistake);
+    localStorage.setItem("global_mistakes", JSON.stringify(globalMistakes));
+  } else {
+    // Richtige Antwort → Gamification Belohnung
+    rewardPlayer(); 
+  }
+
+  nextQuestion();
+}
+
+function rewardPlayer() {
+  player.points += 10;
+  player.xp += 20;
+
+  if (player.xp >= player.xpToNext) {
+    player.level++;
+    player.xp -= player.xpToNext;
+    player.xpToNext = Math.floor(player.xpToNext * 1.3); // steigende Anforderungen
+    alert("🎉 Level Up! Du bist jetzt Level " + player.level + "!");
+  }
+
+  savePlayer();
+}
+
+function savePlayer() {
+  localStorage.setItem("player", JSON.stringify(player));
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if(currentQuestion < currentTest.questions.length) showQuestion();
+  else showResults();
+}
+
+function prevQuestion() {
+  if(currentQuestion > 0) {
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+let points = parseInt(localStorage.getItem("points") || "0");
+
+function addPoints(amount) {
+  points += amount;
+  localStorage.setItem("points", points);
+}
+
+function showResults() {
+  const endTime = new Date();
+  const duration = ((endTime - startTime) / 1000).toFixed(0);
+  const minutes = Math.floor(duration / 60);
+  const seconds = duration % 60;
+  const timeStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const score = currentTest.questions.length - mistakes.length;
+  const key = "test_" + currentTest.name;
+  localStorage.setItem(key, JSON.stringify({ score, time: timeStr }));
+
+  app.innerHTML = `
+    <div class="card">
+      <h2>🎉 Test beendet!</h2>
+      <p>Richtig: <b>${score}</b> / ${currentTest.questions.length}</p>
+      <p class="time-display">🕒 ${timeStr} min</p>
+      ${
+        mistakes.length
+          ? `<p>Du hast ${mistakes.length} Fehler.</p>
+             <button class="primary" onclick="showMistakes()">Fehler ansehen</button>`
+          : `<p>Perfekt! Alles richtig ✅</p>`
+      }
+      <button class="primary" onclick="showSolutions()">📝 Lösungen anzeigen</button>
+      <button class="secondary" onclick="showYearSelection()">Zurück zur Übersicht</button>
+    </div>
+  `;
+  if (mistakes.length === 0) {
+    launchConfetti();
+  }
+}
+
+function launchConfetti() {
+  const duration = 3 * 1000; // 3 Sekunden
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    });
+  }, 250);
+}
+
+function showSolutions() {
+  let html = `<div class="card"><h2>📝 Lösungen</h2>`;
+
+  currentTest.questions.forEach((q, i) => {
+    const mistake = mistakes.find(m => m.question === q.question);
+
+    html += `<p><b>Frage ${i + 1}:</b> ${q.question}</p>`;
+
+    const correctText = q.correct 
+        ? q.correct 
+        : q.correctKeywords 
+            ? q.correctKeywords.join(", ") 
+            : "Keine Lösung definiert";
+
+    if (mistake) {
+      html += `<p class="wrong-answer">❌ Deine Antwort: ${mistake.userAnswer}</p>`;
+      html += `<p class="correct-answer">✅ Richtige Antwort: ${correctText}</p>`;
+    } else {
+      html += `<p class="correct-answer">✅ Deine Antwort war richtig: ${correctText}</p>`;
+    }
+
+    html += `<hr>`;
+  });
+
+  html += `<button class="secondary" onclick="showYearSelection()">Zurück zur Übersicht</button></div>`;
+  app.innerHTML = html;
+}
+function showMistakes() {
+  if (!mistakes.length) return app.innerHTML = `<div class="card"><h2>Keine Fehler 🎯</h2><button class="secondary" onclick="showYearSelection()">Zurück</button></div>`;
+
+  let html = `<div class="card"><h2>🧠 Fehlertraining</h2>`;
+  mistakes.forEach((m, i) => {
+    html += `<p><b>Frage ${i+1}:</b> ${m.question}</p>
+             <p>❌ Deine Antwort: ${m.userAnswer}</p>
+             <p>✅ Richtig: ${m.correct?m.correct:(m.correctKeywords?m.correctKeywords.join(", "):"")}</p>
+             <p class="test-info">(${m.fromTest})</p><hr>`;
+  });
+  html += `<button class="secondary" onclick="showYearSelection()">Zurück</button></div>`;
+  app.innerHTML = html;
+}
+
+function startGlobalMistakeTraining() {
+  if (!globalMistakes.length) return app.innerHTML = `<div class="card"><h2>Keine Fehler vorhanden 🎯
+    </h2><p>Beantworte erst ein paar Tests falsch 😉
+    </p><button class="secondary" onclick="showYearSelection()">Zurück</button></div>`;
+  const shuffled = shuffleArray([...globalMistakes]);
+  currentTest = { name: "Fehlertraining (Alle)", questions: shuffled };
+  currentQuestion = 0;
+  mistakes = [];
+  startTime = new Date();
+  showQuestion();
+}
+
+function showStats() {
+  const keys = Object.keys(localStorage).filter(k=>k.startsWith("test_"));
+  if (!keys.length) return app.innerHTML = `<div class="card"><h2>📊 Statistik</h2><p>Noch keine Tests abgeschlossen.</p><button class="secondary" onclick="showYearSelection()">Zurück</button></div>`;
+  let total=0,count=0;
+  let html = `<div class="card"><h2>📊 Statistik</h2><div class="stats-box">`;
+  keys.forEach(k=>{
+    const {score,time} = JSON.parse(localStorage.getItem(k));
+    const test = k.replace("test_","");
+    html += `<p><b>${test}:</b> ${score} Punkte – 🕒 ${time}</p>`;
+    total += score; count++;
+  });
+  const avg = (total/count).toFixed(1);
+  html += `</div><p><b>Durchschnittliche Punktzahl:</b> ${avg}</p>
+  <button class="secondary" onclick="showYearSelection()">Zurück</button></div>`;
+  app.innerHTML = html;
+}
+showYearSelection();
+</script>
+</body>
+</html>

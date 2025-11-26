@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<style>
+  body { font-family: Arial; background:#f0f2f5; display:flex; justify-content:center; align-items:center; height:100vh; }
+  .container { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2); width:350px; }
+  h2 { text-align:center; margin-bottom:20px; }
+  input { width:100%; padding:10px; margin:8px 0; border-radius:6px; border:1px solid #ccc; }
+  button { width:100%; padding:10px; margin-top:10px; border:none; border-radius:6px; background:#007bff; color:white; font-weight:bold; cursor:pointer; }
+  button:hover { background:#0056b3; }
+  #error { color:red; min-height:20px; margin-top:10px; }
+  .link { text-align:center; margin-top:15px; }
+  .link a { color:#007bff; text-decoration:none; }
+  .link a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="E-Mail">
+  <input id="password" type="password" placeholder="Passwort">
+  <button id="loginBtn">Login</button>
+  <p id="error"></p>
+  <div class="link"><a href="register.html">Noch keinen Account? Registrieren</a></div>
+</div>
+
+<script type="module">
+  import { auth } from "./config.js";
+  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  document.getElementById("loginBtn").onclick = async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const errorElem = document.getElementById("error");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "index.html"; // Weiterleitung zur geschützten Seite
+    } catch (err) {
+      if(err.code === "auth/invalid-email") errorElem.innerText = "Bitte gültige E-Mail-Adresse eingeben.";
+      else if(err.code === "auth/user-not-found") errorElem.innerText = "E-Mail nicht gefunden.";
+      else if(err.code === "auth/wrong-password") errorElem.innerText = "Falsches Passwort.";
+      else errorElem.innerText = err.message;
+    }
+  };
+</script>
+</body>
+</html>
